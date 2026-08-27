@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Considered Fluency — My AI Fluency Plan</title>
+<meta name="description" content="Considered Fluency: a self-hosted, self-tracked personal AI fluency training plan. One file. No account, no subscription, no telemetry.">
+<style>
+  :root{
+    --paper:#fbfaf7; --card:#ffffff; --ink:#1c2430; --muted:#5c6672; --line:#e3e0d8;
+    --accent:#0e6e63; --accent-soft:#e2efec; --warn:#a15c00; --warn-soft:#fbf0dc;
+    --late:#9c2b26; --late-soft:#f7e5e4; --done:#8a93a0;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86em}
+  .wrap{max-width:880px;margin:0 auto;padding:32px 20px 80px}
+  header.plan{border-bottom:3px solid var(--ink);padding-bottom:20px;margin-bottom:24px}
+  .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--muted);margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px;letter-spacing:-.01em}
+  .thesis{font-size:17px;color:var(--ink);margin:10px 0 0;max-width:64ch}
+  .thesis strong{color:var(--accent)}
+  .meta{color:var(--muted);font-size:14px;margin-top:8px}
+
+  /* setup card */
+  .setup{background:var(--accent-soft);border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:8px;padding:16px 18px;margin:22px 0}
+  .setup h2{margin:0 0 8px;font-size:15px;letter-spacing:.08em;text-transform:uppercase}
+  .setup ol{margin:0;padding-left:20px}
+  .setup li{margin:4px 0}
+  details.help{margin-top:8px;font-size:14px;color:var(--muted)}
+  details.help summary{cursor:pointer;color:var(--accent);font-weight:600}
+  .cfg{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0 14px}
+  .cfgrow{margin:8px 0}
+  .cfgrow label{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:4px}
+  .cfgrow input[type=text],.cfgrow textarea,.cfgrow input[type=date]{
+    width:100%;max-width:560px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;
+    font:inherit;color:var(--ink);background:var(--paper)}
+  .cfgrow-inline{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+  .cfgrow-inline label{flex-basis:100%;margin-bottom:0}
+  .cfgrow-inline input[type=date]{width:auto}
+  button.cfgsave{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* counters */
+  .counters{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 6px}
+  .ctr{flex:1 1 130px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+  .ctr .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .ctr .v{font-size:26px;font-weight:700;margin-top:2px}
+  .ctr.warn{background:var(--warn-soft)} .ctr.warn .v{color:var(--warn)}
+  .ctr.late{background:var(--late-soft)} .ctr.late .v{color:var(--late)}
+  .pwrap{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:8px 0 18px}
+  #pbar{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .3s}
+
+  .ctrls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:26px}
+  button.tog{border:1px solid var(--line);background:var(--card);color:var(--ink);
+    padding:6px 14px;border-radius:99px;font-size:13px;cursor:pointer}
+  button.tog[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  #saved{font-size:13px;color:var(--accent)}
+
+  h2.sec{font-size:20px;margin:38px 0 6px;padding-top:18px;border-top:1px solid var(--line)}
+  .secnote{color:var(--muted);font-size:14px;margin:0 0 14px;max-width:70ch}
+
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);
+    border-radius:8px;overflow:hidden;font-size:14.5px}
+  th{background:var(--ink);color:var(--paper);text-align:left;font-size:12px;
+    letter-spacing:.08em;text-transform:uppercase;padding:9px 12px}
+  td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+  .tblwrap{overflow-x:auto}
+
+  /* sprints */
+  .sprint{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:18px 0;overflow:hidden}
+  .sprhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+    padding:14px 18px;border-bottom:1px solid var(--line);background:linear-gradient(0deg,var(--paper),var(--card))}
+  .sprn{font-weight:800;color:var(--accent);letter-spacing:.06em}
+  .sprt{font-weight:700;font-size:17px}
+  .sprm{margin-left:auto;color:var(--muted);font-size:13px}
+  .sprbody{padding:6px 18px 14px}
+  .lens{font-size:14px;color:var(--muted);font-style:italic;margin:10px 0 2px}
+  .day{margin:14px 0 4px}
+  .dayhead{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    border-bottom:1px dashed var(--line);padding-bottom:4px;margin-bottom:6px}
+  .sess{display:flex;gap:10px;align-items:flex-start;padding:7px 4px;border-radius:6px}
+  .sess:hover{background:var(--paper)}
+  .sess input{margin-top:4px;width:16px;height:16px;accent-color:var(--accent);flex:none;cursor:pointer}
+  .sess .sh{flex:none;width:52px;text-align:right;color:var(--muted)}
+  .sess .sbody{flex:1}
+  .sess .st{font-weight:600}
+  .sess .sd{color:var(--muted);font-size:14px}
+  .sess.done .st{color:var(--done);text-decoration:line-through;text-decoration-thickness:1px}
+  .sess.done .sd{color:var(--done)}
+  .hide{display:none}
+
+  footer{margin-top:48px;border-top:3px solid var(--ink);padding-top:18px;font-size:14px;color:var(--muted)}
+  footer a{color:var(--accent)}
+  .next{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-top:12px}
+  .next strong{color:var(--ink)}
+
+  @media print{
+    .setup,.ctrls,button{display:none}
+    body{background:#fff}
+    .sprint,table,.ctr{border-color:#bbb}
+  }
+</style>
+</head>
+<!-- ══════════════════════════════════════════════════════════════════
+     YOUR SETTINGS — edit these two attributes, nothing else is required.
+     data-gate : the date you intend to finish by (YYYY-MM-DD)
+     data-key  : the browser-storage key. Change it to start fresh.
+     ══════════════════════════════════════════════════════════════════ -->
+<body data-gate="2026-10-31" data-key="aifp_core_v1">
+<div class="wrap">
+
+<header class="plan">
+  <p class="eyebrow">Considered Fluency · self-hosted · self-tracked</p>
+  <h1 id="planTitle">My AI Fluency Plan</h1>
+  <!-- Replace the sentence below with YOUR objective. One sentence. Make it testable. -->
+  <p class="thesis">By the gate date, I can <strong>delegate, describe, discern, and be diligent</strong>
+    with AI on my real work: I choose the right tasks, specify them precisely, judge the output,
+    and own the result.</p>
+  <p class="meta">Default plan: 35 sessions · ~35 hours · six sprints. This file is yours: set it up
+    in the panel below, no code needed. Progress is stored only in your browser.</p>
+</header>
+
+<section class="setup">
+  <h2>Make this yours — no code required</h2>
+  <form id="cfgForm" class="cfg" autocomplete="off">
+    <div class="cfgrow">
+      <label for="cfgTitle">Name your plan</label>
+      <input type="text" id="cfgTitle" maxlength="80" placeholder="My AI Fluency Plan">
+    </div>
+    <div class="cfgrow">
+      <label for="cfgObjective">Your objective — one sentence, make it testable</label>
+      <textarea id="cfgObjective" rows="2" maxlength="400"
+        placeholder="By the gate date, I can delegate, describe, discern, and be diligent with AI on my real work."></textarea>
+    </div>
+    <div class="cfgrow cfgrow-inline">
+      <label for="cfgGate">Gate date (when you intend to finish)</label>
+      <input type="date" id="cfgGate">
+      <button type="submit" class="tog cfgsave">Save my setup</button>
+    </div>
+  </form>
+  <ol>
+    <li><strong>Fill in the three fields above</strong> and save. Title, objective, and gate apply
+      immediately and are remembered by your browser; the file itself is untouched.</li>
+    <li><strong>Work the cadence.</strong> Tick sessions as you complete them; review the Measures
+      table weekly; keep the pace counter honest.</li>
+    <li><strong>Optional, for the comfortable:</strong> the plan is plain HTML. Open it in a text
+      editor to prune or add sessions (each is a small block with a unique
+      <span class="mono">data-id</span> and an <span class="mono">data-h</span> hours value);
+      counters recalculate automatically.</li>
+  </ol>
+  <details class="help">
+    <summary>Where does my data go?</summary>
+    <p>Nowhere. This page makes zero network requests. Completion state lives in your browser's
+    local storage under the key named on the <span class="mono">&lt;body&gt;</span> tag. Clearing
+    site data clears progress, so use the export button to keep a copy. Moving to a new machine:
+    export, then keep the JSON with the file.</p>
+  </details>
+</section>
+
+<div class="counters" aria-label="progress counters">
+  <div class="ctr"><div class="k">Complete</div><div class="v" id="cPct">0%</div></div>
+  <div class="ctr"><div class="k">Hours done</div><div class="v"><span id="cHrs">0</span><span style="font-size:14px;color:var(--muted)"> / <span id="cTot">0</span></span></div></div>
+  <div class="ctr"><div class="k">Sessions</div><div class="v" id="cN">0</div></div>
+  <div class="ctr" id="cDueWrap"><div class="k">Days to gate</div><div class="v" id="cDue">–</div></div>
+  <div class="ctr"><div class="k">Pace needed</div><div class="v"><span id="cPace">–</span><span style="font-size:14px;color:var(--muted)"> h/wk</span></div></div>
+</div>
+<div class="pwrap"><div id="pbar"></div></div>
+
+<div class="ctrls">
+  <button class="tog" id="fAll" aria-pressed="true">All sessions</button>
+  <button class="tog" id="fOpen" aria-pressed="false">Open only</button>
+  <button class="tog" id="btnExport">Export progress (JSON)</button>
+  <button class="tog" id="btnReset">Reset progress</button>
+  <span id="saved" role="status"></span>
+</div>
+
+<h2 class="sec">Measures</h2>
+<p class="secnote">Feelings do not pass gates; measures do. Review this table weekly. Replace the
+targets with your own; keep every figure honest about how it was obtained.</p>
+<div class="tblwrap">
+<table>
+  <tr><th>#</th><th>Measure</th><th>Target at gate</th><th>How measured</th><th>Cadence</th></tr>
+  <tr><td>M1</td><td>Sessions completed</td><td>100% of the plan you kept after pruning</td><td>The counter above</td><td>Weekly</td></tr>
+  <tr><td>M2</td><td>Weekly hours vs required pace</td><td>At or above the pace counter</td><td>Hours ticked ÷ weeks elapsed</td><td>Weekly</td></tr>
+  <tr><td>M3</td><td>Competency self-scores (4D)</td><td>+1 or better on each, with one line of evidence per score</td><td>Baseline in Sprint 1 vs re-assessment in Sprint 6</td><td>Sprint 1 and 6</td></tr>
+  <tr><td>M4</td><td>Shipped artefacts</td><td>One real deliverable produced with AI assistance, plus your one-page personal use policy</td><td>Artefacts exist and are dated</td><td>Sprints 4–6</td></tr>
+</table>
+</div>
+
+<h2 class="sec">Six sprints</h2>
+<p class="secnote">The plan is structured on the four AI fluency competencies — <strong>Delegation</strong>
+(deciding whether, when and how to engage AI), <strong>Description</strong> (specifying goals precisely),
+<strong>Discernment</strong> (judging output quality), and <strong>Diligence</strong> (owning the result) —
+then applies them to one real project and closes with evidence. Sessions bind to competencies, not to
+any vendor's tool, so the plan survives tool churn.</p>
+
+<!-- ════════ SPRINT 1 ════════ -->
+<section class="sprint" data-sprint="s1">
+  <div class="sprhead"><span class="sprn">S1</span><span class="sprt">Orient and delegate</span>
+    <span class="sprm"><span data-pct="s1">0%</span> · what to hand over, and why</span></div>
+  <div class="sprbody">
+    <p class="lens">You cannot delegate work you have not mapped. This sprint produces your task
+    inventory, your baseline, and your gate.</p>
+    <div class="day"><div class="dayhead">Day 1 — Map the terrain</div>
+      <label class="sess"><input type="checkbox" data-id="s1d1a" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Map your work</span>
+        <span class="sd"> — List ten recurring tasks. Classify each: automate, augment, or avoid. This inventory drives everything after it.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s1d1b" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">First contact, done properly</span>
+        <span class="sd"> — One 30-minute working session with a frontier assistant on a real task from your inventory. Log what surprised you, both directions.</span></span></label>
+    </div>
+    <div class="day"><div class="dayhead">Day 2 — Just enough mechanics</div>
+      <label class="sess"><input type="checkbox" data-id="s1d2a" data-h="1.5"><span class="sh mono">1.5h</span>
+        <span class="sbody"><span class="st">How these systems work, just enough</span>
+        <span class="sd"> — Context windows, training vs inference, why models fabricate. Enough to predict failure, no more.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s1d2b" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Delegation decision drill</span>
+        <span class="sd"> — Pick five inventory tasks. For each, choose the mode: automation (AI executes), augmentation (thinking partner), or agency (AI acts ahead). One written sentence of justification each.</span></span></label>
+    </div>
+    <div class="day"><div class="dayhead">Day 3 — Baseline and gate</div>
+      <label class="sess"><input type="checkbox" data-id="s1d3a" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Baseline self-assessment</span>
+        <span class="sd"> — Rate yourself 1–5 on Delegation, Description, Discernment, Diligence. One line of evidence per score. Date it. This is M3's denominator.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s1d3b" data-h="0.5"><span class="sh mono">0.5h</span>
+        <span class="sbody"><span class="st">Set your gate</span>
+        <span class="sd"> — Rewrite the objective sentence in the header. Set <span class="mono">data-gate</span>. A plan without a date is a wish.</span></span></label>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ SPRINT 2 ════════ -->
+<section class="sprint" data-sprint="s2">
+  <div class="sprhead"><span class="sprn">S2</span><span class="sprt">Describe</span>
+    <span class="sprm"><span data-pct="s2">0%</span> · specification is the skill</span></div>
+  <div class="sprbody">
+    <p class="lens">The quality of what you get is bounded by the precision of what you asked for.
+    This sprint turns prompting from improvisation into specification.</p>
+    <div class="day"><div class="dayhead">Day 1 — Anatomy</div>
+      <label class="sess"><input type="checkbox" data-id="s2d1a" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Anatomy of a strong request</span>
+        <span class="sd"> — Role, context, task, format, constraints, examples. Take three of your old prompts and rebuild them on this frame; compare outputs.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s2d1b" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Context is the work</span>
+        <span class="sd"> — Run the same task cold, then with source material supplied. Measure the difference; internalize why supplying context beats asking better questions.</span></span></label>
+    </div>
+    <div class="day"><div class="dayhead">Day 2 — Reuse</div>
+      <label class="sess"><input type="checkbox" data-id="s2d2a" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Iteration drill</span>
+        <span class="sd"> — One deliverable, three refinement turns, each turn naming a specific defect to fix. Stop when marginal improvement drops.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s2d2b" data-h="1.5"><span class="sh mono">1.5h</span>
+        <span class="sbody"><span class="st">Templates for your top tasks</span>
+        <span class="sd"> — Build three reusable request templates for the highest-value tasks in your Sprint 1 inventory. These are assets; store them where you work.</span></span></label>
+    </div>
+    <div class="day"><div class="dayhead">Day 3 — Contracts</div>
+      <label class="sess"><input type="checkbox" data-id="s2d3a" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Format contracts</span>
+        <span class="sd"> — Practise demanding structure: tables, checklists, schemas, word limits. Output you can use without reformatting is the standard.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s2d3b" data-h="0.5"><span class="sh mono">0.5h</span>
+        <span class="sbody"><span class="st">Describe review</span>
+        <span class="sd"> — Re-run Sprint 1's first-contact task with your new technique. Diff the two results; note what specification bought you.</span></span></label>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ SPRINT 3 ════════ -->
+<section class="sprint" data-sprint="s3">
+  <div class="sprhead"><span class="sprn">S3</span><span class="sprt">Discern</span>
+    <span class="sprm"><span data-pct="s3">0%</span> · judge the output like a reviewer</span></div>
+  <div class="sprbody">
+    <p class="lens">Fluent users are not the ones who trust the machine; they are the ones who know
+    exactly when not to. This sprint builds your verification habits.</p>
+    <div class="day"><div class="dayhead">Day 1 — Verification</div>
+      <label class="sess"><input type="checkbox" data-id="s3d1a" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Verification habits</span>
+        <span class="sd"> — Every load-bearing claim, number, citation, and name gets checked against a source. Practise on one AI-produced document; count what you catch.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s3d1b" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Failure hunt</span>
+        <span class="sd"> — Deliberately elicit confident errors in your own domain, where you can spot them. Knowing the failure texture is the skill.</span></span></label>
+    </div>
+    <div class="day"><div class="dayhead">Day 2 — Rubric</div>
+      <label class="sess"><input type="checkbox" data-id="s3d2a" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Write your quality rubric</span>
+        <span class="sd"> — Five criteria for acceptable AI output in your main task: accuracy, completeness, tone, structure, and the one specific to your field.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s3d2b" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Blind comparison</span>
+        <span class="sd"> — Score an AI draft and your own past work against the rubric, blind if you can arrange it. The result calibrates both your trust and your self-assessment.</span></span></label>
+    </div>
+    <div class="day"><div class="dayhead">Day 3 — Limits</div>
+      <label class="sess"><input type="checkbox" data-id="s3d3a" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Map the limits</span>
+        <span class="sd"> — Document where the tools fail in your domain: task types, data types, reasoning depth. This map is what makes your Delegation choices defensible.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s3d3b" data-h="0.5"><span class="sh mono">0.5h</span>
+        <span class="sbody"><span class="st">Second-opinion pattern</span>
+        <span class="sd"> — Use one model to critique another's output against your rubric. Adversarial review is cheap; use it.</span></span></label>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ SPRINT 4 ════════ -->
+<section class="sprint" data-sprint="s4">
+  <div class="sprhead"><span class="sprn">S4</span><span class="sprt">Be diligent</span>
+    <span class="sprm"><span data-pct="s4">0%</span> · you own the result</span></div>
+  <div class="sprbody">
+    <p class="lens">Whatever the tool did, the work carries your name. This sprint writes down the
+    rules you will actually follow.</p>
+    <div class="day"><div class="dayhead">Day 1 — Data and disclosure</div>
+      <label class="sess"><input type="checkbox" data-id="s4d1a" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Data discipline</span>
+        <span class="sd"> — Write the list of what you never paste into a model: client identifiers, credentials, personal data, anything under confidentiality. If your organization has a policy, read it; if not, yours is now the policy.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s4d1b" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Provenance and disclosure</span>
+        <span class="sd"> — Decide, in writing, when you disclose AI assistance and how you record what was machine-drafted. Ambiguity here is where reputations go.</span></span></label>
+    </div>
+    <div class="day"><div class="dayhead">Day 2 — Risk and regulation</div>
+      <label class="sess"><input type="checkbox" data-id="s4d2a" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Bias and failure modes</span>
+        <span class="sd"> — Study the systematic failure classes: bias in and out, sycophancy, spurious confidence. Identify which two are most dangerous in your work.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s4d2b" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Regulatory literacy</span>
+        <span class="sd"> — Know what your jurisdiction expects. In the EU, Article 4 of the AI Act obliges organizations to take AI-literacy measures for staff; elsewhere, expectations arrive through professional bodies and employers. Know where you stand.</span></span></label>
+    </div>
+    <div class="day"><div class="dayhead">Day 3 — Your operating rules</div>
+      <label class="sess"><input type="checkbox" data-id="s4d3a" data-h="1.5"><span class="sh mono">1.5h</span>
+        <span class="sbody"><span class="st">Write your one-page use policy</span>
+        <span class="sd"> — Three headings: allowed, gated (needs review before use), never. Date it, follow it, revise it at the gate. This is M4's second artefact.</span></span></label>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ SPRINT 5 ════════ -->
+<section class="sprint" data-sprint="s5">
+  <div class="sprhead"><span class="sprn">S5</span><span class="sprt">Apply</span>
+    <span class="sprm"><span data-pct="s5">0%</span> · one real deliverable, shipped</span></div>
+  <div class="sprbody">
+    <p class="lens">Courses end; work ships. Everything from Sprints 1–4 converges on one real
+    deliverable that someone other than you will use.</p>
+    <div class="day"><div class="dayhead">Day 1 — Select and start</div>
+      <label class="sess"><input type="checkbox" data-id="s5d1a" data-h="0.5"><span class="sh mono">0.5h</span>
+        <span class="sbody"><span class="st">Project selection</span>
+        <span class="sd"> — One real deliverable from your inventory, meaningful but boundable. Write the done-condition before you start.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s5d1b" data-h="1.5"><span class="sh mono">1.5h</span>
+        <span class="sbody"><span class="st">Build session one</span>
+        <span class="sd"> — Work the project with your templates and format contracts. Log where the tool carried weight and where it dropped it.</span></span></label>
+    </div>
+    <div class="day"><div class="dayhead">Day 2 — Build and critique</div>
+      <label class="sess"><input type="checkbox" data-id="s5d2a" data-h="1.5"><span class="sh mono">1.5h</span>
+        <span class="sbody"><span class="st">Build session two</span>
+        <span class="sd"> — Push to a complete draft. Resist polishing; completeness first.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s5d2b" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Critique pass</span>
+        <span class="sd"> — Apply your Sprint 3 rubric and the second-opinion pattern. Log every defect found; fix the load-bearing ones.</span></span></label>
+    </div>
+    <div class="day"><div class="dayhead">Day 3 — Ship</div>
+      <label class="sess"><input type="checkbox" data-id="s5d3a" data-h="1.5"><span class="sh mono">1.5h</span>
+        <span class="sbody"><span class="st">Ship it</span>
+        <span class="sd"> — Finish, verify, deliver to its real audience. This is M4's first artefact.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s5d3b" data-h="0.5"><span class="sh mono">0.5h</span>
+        <span class="sbody"><span class="st">Retrospective</span>
+        <span class="sd"> — What did AI assistance change: hours, quality, confidence? Numbers where you have them, honesty where you do not.</span></span></label>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ SPRINT 6 ════════ -->
+<section class="sprint" data-sprint="s6">
+  <div class="sprhead"><span class="sprn">S6</span><span class="sprt">Consolidate and evidence</span>
+    <span class="sprm"><span data-pct="s6">0%</span> · prove it, then plan the next climb</span></div>
+  <div class="sprbody">
+    <p class="lens">Fluency you cannot evidence is fluency you cannot claim. This sprint closes the
+    loop against your baseline and decides what comes next.</p>
+    <div class="day"><div class="dayhead">Day 1 — Re-assess</div>
+      <label class="sess"><input type="checkbox" data-id="s6d1a" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Re-assessment against baseline</span>
+        <span class="sd"> — Re-score the four competencies with one line of evidence each. Compare to Sprint 1. M3 passes or it does not.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s6d1b" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Close the weakest gap</span>
+        <span class="sd"> — One targeted session on your lowest-scoring competency, using the drills from its sprint.</span></span></label>
+    </div>
+    <div class="day"><div class="dayhead">Day 2 — Evidence</div>
+      <label class="sess"><input type="checkbox" data-id="s6d2a" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Assemble the evidence pack</span>
+        <span class="sd"> — Export your progress JSON, gather the dated artefacts: inventory, baseline and re-assessment, templates, rubric, limits map, use policy, shipped deliverable.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s6d2b" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Teach one thing</span>
+        <span class="sd"> — Explain one technique to a colleague until they can use it. Teaching is the test you cannot fake.</span></span></label>
+    </div>
+    <div class="day"><div class="dayhead">Day 3 — Gate review</div>
+      <label class="sess"><input type="checkbox" data-id="s6d3a" data-h="1"><span class="sh mono">1.0h</span>
+        <span class="sbody"><span class="st">Draft the next cycle</span>
+        <span class="sd"> — Copy this file, reset the storage key, and write the next six sprints: deeper on one competency, or wider into new task classes.</span></span></label>
+      <label class="sess"><input type="checkbox" data-id="s6d3b" data-h="0.5"><span class="sh mono">0.5h</span>
+        <span class="sbody"><span class="st">Gate review</span>
+        <span class="sd"> — Score the Measures table. Pass, extend, or redesign; all three are legitimate, undocumented drift is not.</span></span></label>
+    </div>
+  </div>
+</section>
+
+<h2 class="sec">Risk register</h2>
+<p class="secnote">Self-directed plans rarely fail on content; they fail on these. Each risk has a
+mitigation already wired into the plan.</p>
+<div class="tblwrap">
+<table>
+  <tr><th>#</th><th>Risk</th><th>Signal</th><th>Mitigation (already in the plan)</th></tr>
+  <tr><td>R1</td><td>Momentum fades after Sprint 2</td><td>Pace counter climbs above your available weekly hours</td><td>Weekly Measures review; "Open only" view keeps the remaining work small and visible</td></tr>
+  <tr><td>R2</td><td>Passive consumption replaces practice</td><td>Sessions ticked but no artefacts exist</td><td>Nearly every session produces a written artefact; M4 audits them</td></tr>
+  <tr><td>R3</td><td>Tool churn strands the plan</td><td>A favourite tool changes or disappears</td><td>Sessions bind to the four competencies, not to any vendor</td></tr>
+  <tr><td>R4</td><td>No feedback loop; errors compound</td><td>You cannot name the last mistake you caught</td><td>Rubric (S3), second-opinion pattern, teach-one-thing (S6)</td></tr>
+</table>
+</div>
+
+<footer>
+  <p><strong>Method.</strong> Sprint, measure, and risk-register pattern by Patrick van Abbema,
+  AltNexus AI Core, Ottawa. Competency frame: the four AI fluency competencies (Delegation,
+  Description, Discernment, Diligence) from Anthropic's AI Fluency framework.</p>
+  <div class="next">
+    <strong>Want a plan generated for your objectives, your level, and your hours?</strong>
+    Considered Fluency Pro adds an intake diagnostic, a bespoke-plan generator, six-track depth
+    content, and an exportable evidence log. Details at
+    <a href="https://altnexus.com/considered-fluency/?utm_source=ai-fluency-plan&amp;utm_medium=core&amp;utm_campaign=considered-fluency-pro" rel="noopener">altnexus.com/considered-fluency</a>
+    — you will get a reply within two business days.
+  </div>
+  <p style="margin-top:12px">Template code: MIT licence. Written method content: CC BY-NC 4.0.
+  Version 1.0, 2026.</p>
+</footer>
+
+</div>
+
+<script>
+(function(){"use strict";
+var body=document.body;
+var KEY=body.getAttribute("data-key")||"aifp_core_v1";
+var GATE=body.getAttribute("data-gate")||"";
+var boxes=[].slice.call(document.querySelectorAll("input[data-id]"));
+
+function load(){try{var r=localStorage.getItem(KEY);if(!r)return{};var o=JSON.parse(r);
+  return(o&&typeof o==="object")?o:{};}catch(e){return{};}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+var st=load();
+
+var CKEY=KEY+":cfg";
+function loadCfg(){try{var r=localStorage.getItem(CKEY);if(!r)return{};var o=JSON.parse(r);
+  return(o&&typeof o==="object")?o:{};}catch(e){return{};}}
+function saveCfg(){try{localStorage.setItem(CKEY,JSON.stringify(cfg));}catch(e){}}
+var cfg=loadCfg();
+function applyCfg(){
+  if(cfg.title){document.getElementById("planTitle").textContent=cfg.title;}
+  if(cfg.objective){var th=document.querySelector(".thesis");if(th)th.textContent=cfg.objective;}
+  if(cfg.gate){GATE=cfg.gate;}
+  var f1=document.getElementById("cfgTitle"),f2=document.getElementById("cfgObjective"),
+      f3=document.getElementById("cfgGate");
+  if(f1)f1.value=cfg.title||"";
+  if(f2)f2.value=cfg.objective||"";
+  if(f3)f3.value=cfg.gate||GATE||"";
+}
+
+function say(t){var n=document.getElementById("saved");if(!n)return;n.textContent=t;
+  setTimeout(function(){if(n.textContent===t)n.textContent="";},4000);}
+function daysTo(d){if(!d)return null;var a=new Date(),b=new Date(d+"T23:59:59");
+  if(isNaN(b))return null;return Math.ceil((b-a)/86400000);}
+function fmtH(h){var s=(Math.round(h*100)/100).toFixed(2).replace(/\.?0+$/,"");return s===""?"0":s;}
+
+var TOTH=boxes.reduce(function(a,b){return a+(parseFloat(b.getAttribute("data-h"))||0);},0);
+
+function render(){
+  var h=0,n=0,g={};
+  boxes.forEach(function(b){
+    var id=b.getAttribute("data-id"),
+        on=Object.prototype.hasOwnProperty.call(st,id)?!!st[id]:false;
+    b.checked=on;
+    var row=b.closest(".sess");if(row)row.classList.toggle("done",on);
+    var sp=b.closest("[data-sprint]");
+    if(sp){var k=sp.getAttribute("data-sprint");if(!g[k])g[k]={d:0,t:0};g[k].t++;if(on)g[k].d++;}
+    if(on){h+=parseFloat(b.getAttribute("data-h"))||0;n++;}
+  });
+  var pct=boxes.length?Math.round(n/boxes.length*100):0;
+  document.getElementById("cPct").textContent=pct+"%";
+  document.getElementById("cHrs").textContent=fmtH(h);
+  document.getElementById("cTot").textContent=fmtH(TOTH);
+  document.getElementById("cN").textContent=n+" / "+boxes.length;
+  document.getElementById("pbar").style.width=pct+"%";
+  Object.keys(g).forEach(function(k){
+    var p=g[k].t?Math.round(g[k].d/g[k].t*100):0;
+    var l=document.querySelector('[data-pct="'+k+'"]');if(l)l.textContent=p+"%";
+  });
+  var dleft=daysTo(GATE),wrap=document.getElementById("cDueWrap");
+  if(dleft===null){document.getElementById("cDue").textContent="–";}
+  else{
+    document.getElementById("cDue").textContent=dleft<0?("+"+Math.abs(dleft)):dleft;
+    wrap.classList.toggle("warn",dleft<=14&&dleft>=0);
+    wrap.classList.toggle("late",dleft<0);
+  }
+  var rem=TOTH-h,wks=(dleft&&dleft>0)?dleft/7:0;
+  document.getElementById("cPace").textContent=
+    rem<=0?"0":(wks>0?(Math.round(rem/wks*10)/10).toFixed(1):"–");
+  filt();
+}
+
+var openOnly=false;
+function filt(){
+  document.querySelectorAll(".sess").forEach(function(r){
+    r.classList.toggle("hide",openOnly&&r.classList.contains("done"));});
+  document.querySelectorAll(".day").forEach(function(dv){
+    if(!openOnly){dv.classList.remove("hide");return;}
+    dv.classList.toggle("hide",!dv.querySelector(".sess:not(.hide)"));});
+}
+
+boxes.forEach(function(b){b.addEventListener("change",function(){
+  var id=b.getAttribute("data-id");
+  st[id]=b.checked?1:0;
+  save();render();say("Saved locally");});});
+
+var cf=document.getElementById("cfgForm");
+if(cf)cf.addEventListener("submit",function(e){e.preventDefault();
+  cfg.title=document.getElementById("cfgTitle").value.trim();
+  cfg.objective=document.getElementById("cfgObjective").value.trim();
+  cfg.gate=document.getElementById("cfgGate").value;
+  saveCfg();applyCfg();render();say("Setup saved");});
+
+var A=document.getElementById("fAll"),B=document.getElementById("fOpen");
+A.addEventListener("click",function(){openOnly=false;
+  A.setAttribute("aria-pressed","true");B.setAttribute("aria-pressed","false");filt();});
+B.addEventListener("click",function(){openOnly=true;
+  B.setAttribute("aria-pressed","true");A.setAttribute("aria-pressed","false");filt();});
+
+document.getElementById("btnExport").addEventListener("click",function(){
+  var title=(document.getElementById("planTitle").textContent||"").trim();
+  var payload=JSON.stringify({plan:title,product:"Considered Fluency",version:"core-1.1",gate:GATE,
+    exported:new Date().toISOString(),
+    totals:{sessions:boxes.length,hours:TOTH},
+    completed:Object.keys(st).filter(function(k){return st[k];}).sort()},null,2);
+  var a=document.createElement("a");
+  a.href="data:application/json;charset=utf-8,"+encodeURIComponent(payload);
+  a.download="ai-fluency-plan-progress.json";
+  document.body.appendChild(a);a.click();a.remove();
+  say("Progress exported");
+});
+
+document.getElementById("btnReset").addEventListener("click",function(){
+  if(!confirm("Reset all progress stored in this browser? Export first if you want a record."))return;
+  st={};try{localStorage.removeItem(KEY);}catch(e){}
+  render();say("Progress reset");
+});
+
+applyCfg();
+render();
+})();
+</script>
+</body>
+</html>
